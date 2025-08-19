@@ -12,18 +12,44 @@
     .card {
       background:#0f172a; padding:20px; border-radius:12px;
       box-shadow:0 8px 25px rgba(0,0,0,.5); width:300px; text-align:center;
+      box-sizing: border-box; /* Added to fix sizing */
     }
-    input { width:100%; padding:10px; margin:10px 0; border-radius:8px;
-      border:1px solid #555; background:#0b132b; color:#fff; }
-    button { padding:10px 14px; border:none; border-radius:8px;
-      background:#38bdf8; color:#082032; font-weight:600; cursor:pointer; }
-    #status { margin-top:10px; font-size:13px; color:#94a3b8; }
+    .input-container {
+      margin: 10px 0;
+      position: relative;
+    }
+    input { 
+      width: 100%; 
+      padding:10px; 
+      border-radius:8px;
+      border:1px solid #555; 
+      background:#0b132b; 
+      color:#fff; 
+      box-sizing: border-box; /* This fixes the alignment issue */
+    }
+    button { 
+      padding:10px 14px; 
+      border:none; 
+      border-radius:8px;
+      background:#38bdf8; 
+      color:#082032; 
+      font-weight:600; 
+      cursor:pointer; 
+      width: 100%; /* Make button full width too */
+    }
+    #status { 
+      margin-top:10px; 
+      font-size:13px; 
+      color:#94a3b8; 
+    }
   </style>
 </head>
 <body>
   <div class="card">
     <h2>Enter Password</h2>
-    <input type="password" id="password" placeholder="Password" />
+    <div class="input-container">
+      <input type="password" id="password" placeholder="Password" />
+    </div>
     <button id="unlockBtn">Unlock</button>
     <div id="status">Waiting...</div>
   </div>
