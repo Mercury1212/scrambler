@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🔐 Encrypted Page</title>
+  <style>
+    body {
+      margin: 0; display: flex; justify-content: center; align-items: center;
+      height: 100vh; background: #0b1220; font-family: sans-serif; color: #e2e8f0;
+    }
+    .card {
+      background:#0f172a; padding:20px; border-radius:12px;
+      box-shadow:0 8px 25px rgba(0,0,0,.5); width:300px; text-align:center;
+    }
+    input { width:100%; padding:10px; margin:10px 0; border-radius:8px;
+      border:1px solid #555; background:#0b132b; color:#fff; }
+    button { padding:10px 14px; border:none; border-radius:8px;
+      background:#38bdf8; color:#082032; font-weight:600; cursor:pointer; }
+    #status { margin-top:10px; font-size:13px; color:#94a3b8; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Enter Password</h2>
+    <input type="password" id="password" placeholder="Password" />
+    <button id="unlockBtn">Unlock</button>
+    <div id="status">Waiting...</div>
+  </div>
+
+  <!-- Load argon2-browser -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/argon2-browser/1.18.0/argon2-bundled.min.js"></script>
+  <script>
+  // === THIS IS YOUR ENCRYPTED PAGE CONTENT ===
+  // Replace this string with your encrypted HTML (using your encryptor).
+  const encryptedPage = `NJrwy6mM9hJdksKIfTxR-HL94Yz-wvuGyLrF4Dr1Wk9HsvQN93og3UKGU4y0PIQKjq3HE-07YZUMtbx8YD9dLA-wAlXMOECro36qJmVaYS32YIJddpGpQQTpjI4ludAGO-QDoRc8C_zEQWcK7pcoyhGcm9aEDfmpb9bDC3SORSJb5jPfrD9qMHf8NCatHiStUFBFa_o8mBqCLiN6RolhCp0XqkOBtoBX-ffQXyZYgCz9v8u10zE5nTpWDBJmGzgJZECtLur8aCL7NQ9MUl5AYw2WOQGCw4DNVczQhdFVr2FLt7YlDVqfNOqxq2INUcCFIHNNx47h-gtv8LplJ6BKShh2-QLEWiGh2-ujse2NHxj-Yc1hOjBGASWXlA9IuxZ59xB8s8HhcFa1Vba8EsV3-kmQj95jEZs7ktPCuSifkwkotTG_2YNDLiuVIhrVyb0NXlgX93cEC957KFBp8R-qF3XkQTUJaac2dEFEt08gqPQX0iF-F0gvVRLnrIZO1I9D5MkbeVfotZA1lfwTjRXcbI02HwrkomXYLZXJQN-YzpnmH4lalZKOMobnk-8PEYrmp2L3fkkgIPAPZjZrJqb2Q9BNAH-LxhF9lYDJuo4pUlMrfVCCCVh8gy7OORSM5Bf68uCw1jpJkDc7ru7tffRdPHCAAMUKLlNUejqQ2oHX7wbrMCKbaljslIwFhzi8oJ2pl_qUSC59fl5qex0DrA7ISxOQYXmX6Kg6sIeJxWZNT7wj6RExM63SCrOwKzaG5WdXD2JXWXjHp_7JFMq0tyYkFjG1drUq0nTLNN_SPGv354iPoMjTU3ErEGlCCpQ9Rg1qmXR-cX6Rz0lSRJv2rlQsQDRK9vrOKyxNR5Mn0cvBb6EqmeqnTp27B8SyqIsrT148FEQx4x25zzJBLkcCSZCzDnJeEJGncitoEXa8PPWntCY0b6KjT66NmEDEny1jGJGOJNCXjADOLj30xchS_1G3EI4-s6Xixxdn8nqb18OBXzn1p4nQsOejdDdSlZFwros_Nt9ZYbgDkAvPFZwvMK0lOz3TnCFM3WEPdpWIdhcx_xhrr5_UIPcEv459LXRT7NRUx1KzrOVrY53JLEql8cvpQ5WFhMUgRpYIcvfUhsPvqXj_f6AgxdPeMQA_XX-e5cRu9Tow1xqoT9TGJUbHZ_QB8cb0SeMUqX7ADWKHEpzw8uUycdBOejEZ7_bLVb_Dt7GF7FywVGLp6kGJe2zLthxhQcdGMXwZR0Z2BdcH4reQcLqa-6k2ovALYbDA_6xd39SzbXj97iMb2bvOmDnrqIzQ2aCJTqCd7mLJBKMXJPK9DylJ5C5RnRMlXrid0WXUE2B9eBWAHb70nJBnk7TgGYVU_I1e5_vqXBIJxc5VFmFcSU290Fk9tRprRvhg1tuAHr2Y6jdaaqSlPTuOpTPmp_zEZ5Kr3NBFO5DblyjqOTd8QXV2NptHEd5o9tFzdskfaqk6B1Uf2KM8nUooFgDGOQSs4p-Jf-M2Z2D5tYk8TEPYNZ5IKwzZ7nvAvaq9kkC9HEWxaEQ7dX0h8FczLZTTcY5UrbhimrM6ARByt5abatzTCt9NQOxcrFXsIvWNGVVE_21Ntj4MLijLXbY8ANTBJ0v1r0WPKh_vEHVihBplR5aLldoth4HMDUhuTL_eh6kfoi6VqFerdFiwBe_ammWTcpi5lsqkp9JZ-3b8Btxwb3pkn3HgiBvCx8GZToZ430FYqdLjk_47i5CCqu8MSLE0eoM8xQslVFaxhSwYMjvGV1R4f7GpIkgtX2nuh05dVzco8wEFcQfocXdry7a7aWGUsBfD5wfqSNwSx8sZNjDJi1VxIpJ8xU702htpiZDlwoG3sBw2Hmn9OHM1HW4-uWbpN4JVreFIZ4xnHX4qonwqapgPdKZ0h5abeyuFkLf0IWHFOoXFuveGUVTzP50Re40KLbT9Bo_aDc1npRuh5kUKGT8IqteZ0zrz1TITohQbtn2bMnaywBJxMZIsBmMtU8NC4AWOQ11LzEo8H-qMKczNXuucZxSOCQNVJAq-NUmDspNvZbDV0Ui8WQ7DnPPsXPakiuyjQdp-AcSCcFBMNAuw1BLYnTvmcTtwwa_UDcYsEA1fWVLP5ue1nQ6FzDawYSju92wN479lu7PFpzJr0M5HTTQRKCkzaXxh9ICRaoxOABQciWcqwfy_Og71fBtw9jEUoIAqhYoS-O5CvYSX1ML4QQv4RfiWlG-8IBKnxLKU6gG6TEF46O5Y-U7U-z3KDkGppLvzY29KXiayg8U9ipOCWx7vVlTCYgYxyux27FcZZAIXE_fK03TxYRwImVTSEpv2uC0-pduc7sr1OtXPHFw9x0A2byv-337dx9Ozt0Hk3cSozYDIpytuGawWDF9i0ZXjMskYVwH5gQCLYP_LhwagUr5p9gpq1Ozk9tKhLBJoCmtVq_gHuTOwuKvHxMBzNYbFCVQYBsLcYdCP9Zsue6b8Ydy3rrhsUg53u_UglgKfIfE6cCfYX6tN-igC2mK6Jj2mIXEcQPhtRD09vuM7m3D8VBhu5c9bpK-_pkrZIyoqfSiTH7KdgoPZdDZsx7GksW-r_JR4SWltp-ysRJr42EMq40GOiwElX0st-4kKD6x9Rol9qv6iA2YsRFx9DavtgcYSjZ4w_wZgL4mxlYbU8ppqrKKkXp0ZfprJP4zGIxgRKpvJ5-cBoR8jr5c3T8_RYWM7rT2czJeUiGjgAvt6wuCC9JiJqHG4O3lAVtsaPk7zLFeiN4JEGWjhN9HY6cVC9aeQVp5ZBvYCAFiv-D4Ms3IaptDf3hzL7Rs9AqzFB3g5yTU46UhdFRlwEwZkow4agO5G0-K_AuT0ZuTm0zOp-ou-7zlSGYufc-oDV2jaypje_hVoinC53pPoXpmHIcPgOkEII5IIhmLMIbu7lvuKhHDfgXwmCVOjO-c_55RVLpvXVEnods1CjQpWMqkohdZssAHeH0JCQvkSOBkziDBEyA6USxlNVC_lAuDQXtqbDHqeagtFP8zInLVsx6aJt-9bwoc5Feytgp81GPDqhqwuhiF26TOqT6BeWSo1ZAL3LyVFEDh7PIVVYgR84APQ1TNyJ0eDhOZSVUnEZtZCwt8sL3rEzoh-L-iEkSVloqMgC-QgovOMOWjjPxvu9_XMuSusi_B5NU91Xt56fYP4wYhtqHCev1N50fTlcxBCvquZ5GAPamsMUdIvxduqr-ByLVgJLCr9iTy-WIM4g7yhtx06Txa0RMkerRnvPkpZLHfutxveCWJWz7pQ5mwsXcoK-ZSAz64GGrOOtX5YUgB1ZZzajqI-a--rPE-2T4KHe-hU8Ba42D69z0xEfGObOBzyAbczx6dz5DUVU-k3QIvcCPG0ZuKXlPQOLFTHxL9Rjp-2rD9Kzeu2SO6P3Tghfqr_wT2DcO-zQdaO1aeG3hCOUhj1JOXVSCo9tpH_9VHScXsZZ7qWFaFCs6yOZ2eoCw90iZfjN8UddDj9IefeL0_0dk8ChfgUp4q1iDxQstGuKsB2sWwVyzeWMBB2grCBmN6ohUA0n2IW1rN9vqLhOrHjVBXdirqwU5JkmXPncc6aEDniliKc0jCFx_cKe397qZPyVGd1d9NGmHkBNmT-1OKCpBPy8TzzRH0zK3T0rbB_rfLZc1YyMn1V1yHjZSPetq0WF8kVazMHmd0vSderYZiicdOJpvPPk3d2WOnv-vmbBEoTvkkKprEfpy5s5qNhgwiN90172avc69R5YIyS4T2LBnCtgTheE64vgTS3HnDSUlDHp_fo06_a9yuZuvTLIyZjGxvLmNqr9cpeBNtK6ev6czUeSBF9fN7MnksJQjpDkQH5U2HvC2oNI6qEgZ0w-wMOt2V1pD8DKMVSW0YAQduXxb2sj1mIe4bUroUTr1WPCgetomc4BY7lLbNe-CIKdkv4UYrLEwgGvk2vC8jYfBqHXmdkwsHUjBG9ONxCYBgTXTeyx4oNVnLkIf5LHIIfRSgyQtLWkSL-xlR-sGMi1E3_EfRXCHC0Ruz1krWqr48V16icZtgRLJVFsDMz5sx22-R7-SKH_yRTZiRwQkLdF8__uKr264FvILGxzqTJSnFuo5cUWlH-558Wycw_emI4ZQ574zbMUVoh2-Bq6p4UqYSM3Xspt187AN0S5lqqeomro8xSo9PbihHrYp7yl0VnshjJeHikkeawu16NEP_zLOQUFBd4t4dHfuYT4K7IV1cOy48CuHkiuYghZ_xEyfseYw93qmeR58ZXc5OkEIBLGCY8fAfsiWZgMrjn5FV8CLPzFcGXNo5jNXrO4OBDK4YbZL3fUsN26EgZoLIwuXFqPAztR165SpzB02BnWGRaW-UVQIs_ga0y_hGQ-SnsnKVfbb6F3vcGlN63aGYVaWtmEBmUqqU_k3u-tTVS1cAJ5mF412BLg6Ffp7GX5QbHI83Uny5RdnYooK0h81Kh9osVxLHyGYzLltN637IvfSXZ6zMd3YWa6Uh-WGXuc_bsGq3GfmoOOtJZI50cS1neI2guGeMEVJfz9R0EM5ptGlhsKcO198bHa0iap1axwfRjXdog0uB3kO5i_vgitL67GNwfg6vTJZoFIxYfAT_Iz3GRbWpmrQnT6JfqBwP2Bbzs2c4SdGoSg29ZVo2-WNFO-7w0x42L2jYGXAJcNi9hcF4CdvQVCFK_jPzKBhuT_S5ftPLYRZ9sHVFtAqhJC7IWOz5ezrQ6cuuIrIjAu8eLeNQrI-1g71gCvvV-TUR01wJEJfDB2myNn3SPfkMNE1ErB6lUQxxtOIMV9rcRObn3AbrUGj_qjc3KzaNqYR__Hj5EW-jf75ydmwlOMA8IOaNABZf05DXJQ3y14RS4j6OTxa15mTfPPG1jfTmBpB0TXbI1j3-ysALBi64Oa7NFzTqomou-4-e2FNhdFSUX929-v3V5gNKDAEKzsHhfoYWrxnd98i6QYXU3nw_IHqDiFfGNGdsslHJPQLyTbDNSsdroFwuMEnieSBIzWCZrx4hnnPms9cE5GVUXxQxFh-f1sDg-rcxTkQAvXkRNhsZ_GmECDySpQ6yQ_kbpMTH3GC5XP2NnolaJqddK9YHoz9JL-jsBjOuZ4IN5R1Y06QTOx3ETAmiaP8ODXkGxFtQbl-VArMoWKZnklbOnIvlQYs_8olq0pOll20tC51sxHCoR_qNIbIODw6-rLmqnAEGiY3gw0Q-DY7T98RfnclZo88MsamywGWZ4HQxiW4ITir8NeJf7Pjd2H1kChKH0q6byyiaIButJhEp_86oM3LG3TbmkzNOPMzdA88epNyZWA-bjZ8B6Si0PEuyWS5vDvm49KRjCpM4CM2m6Fi44m2Tz3b-Ht3kWkj4sIT6wSLXv7Etad_nQq_rPWylewDRzR-aqDJjtDLQVPR_mbGBWNjjfSXCCdomQYqRR8tiuBjfIjaPMeKf1SdPxqMAPT3Lnb1SlEdPGAZZiFAwWtKLNo3-9Wbu9-LsPlq-wLThPXtPsasnFonHE7vEztcZ1ZCT-z9xpZfhSP9Dfy3t7JhxUaPASWfOMlIyUAcr65_vgaxVd8_Ob_p20shKhTEUBLmUnPGSqzFiCjBhLe-nDLk--ujjkqltEWocdAdOo0VdSuK5MytKD0OlQ90RzKbmkSSiwbYwg3gJy7673tophzEQu57fygrLKnKSRkGomWAxuHJ6ZmCcOF04LBJEsBkCAMgficCM_a31czN9ZFZUA1lWj8RxTEt_vO_Cw_N6-2ON3qwvzQmznx8mAjlE4-XZHl9GHp4PjgJBqjJoOzaS-6jhBRC4FsErqLnNG_d817aa_wqRh3O_alYxaC8K-6Q8sQmsbzowVrjhK48WfvrPAbl5na03x7TteHqTHOzxpO2lGNu_VcIsXFclCi3PJIR2rZA1yWkAtX3cL0kOYq6EPEV6YDwPzO7r4IioGQetWUvh5v_qNX4B-QoaTDbg2xrw0X6-zNWvWPMZiPb6SwVw-DU9_7LLJ0JXPvvTXMZ--lMb5Z1WcOU8vhPxE8bwCMRhPKyaXZPFgsf4_mbSyqAV1Qu1MqNIcOTvEBg4KlgBUaPfRhZr6kIJ_LvggRrOJgedl5nsK_PkdIhonOqZHCOi4OZq8lmkm3bDfFXGrYrzIrVQZ9u0rygd-8XDzvSI9p_TMxVx_1-n8Rh1a0ArvzGkgR6MeYbrEEKhUojpmp7H7HF5Tkjz1Z_w77-7N3r2PJRYA71RZs_ziHPD4RnGgDWs3FJNUZTO6IxIhCBKxsD3FgQS5TqMNEREaxbxii365n8QrXLa1SRBsOmIQhcSGLP2DutUCMoi_ct0Y6F0Is-PrY6gU7ayln3I5EVxIwGWVBzNfofu_veueiZxWVpn8RwSosLKTzklOm9mODXTNRNagnf9r-3m4GU-kq9RZScasWexXwIky9Qgv9YTrqiK9Vv1SEnjVHyaNd8w4-Aw9G0r_nAzRpcd6Vhl-YMUeTqYejM2sc9tr3ioTRTZmRUUQdgwC3JV1wjoqmJJIbGAx3P7bUVoZs-90WfVgxkOJqRjBsvKeQwMsbcMhswTWNJrFhaBHZeoQ4OZ38jIbOwXKZ0zhU1T0_TQ7Ud_LD96Bv4ySYrj9EWvT8xZtxGJ7LnONxn8vqLo77R-cGix39xKJ5CgtDhUO5tOMi0g7AmMBgNZw5xgsPge6YBuYD1TA5dfUetvb4U7YZLCRycAXlpxqBDB86uW7SSDcRfObcKXCTYAiBwc_WojHpnUZCayhATOtRKxoUOkzKocGlJUfzElDNBss7bWQrK3EFfcl9lemSdKEXmUoYfY3Vn4bzqXB3Cqu2BQduVB3Bsa8cJdVDDybcaYBteDl-iLWfVdMfIdue2zL3JisLE65JZOJ9iPCpFvBAXK1IvnyfTprNPKJxLocNGg6Xv-0LCb2RN78GzvXWjyyqTAaVtsupPDGjEQCrz8lc67KZrKqIJE14FduNuCaF9q2AWV50dMlAxvH2SYwH0jtSDc6KUMTX88Nitv1riO-vfPpGXXbgUoVyLcK1W-bUd1DRQbP63JXRaVzhv3uNd1vZOIbMRmeuEiJAAw33Pzc6hSQpQRDZGskK6LVZWGQanzPMOqNdxPhFEOgp9UN-6Sr0k8CcR9S_YAydiC74zFMEXVMX8-jRFW-aQkm-x9ts8jmKDk7jFy3kPJf-7sCbMIgHSoGL0jMN2sBO1U_9bcPdoKgLveeaWgT1l3l8R7Wx6_y_1KnaQGOEoR8kwJbHvdLH7XmxBK9wGi_O0xm_v1KvnDysWpQmtbsvbs_IjcqYVoy3YaUOQmpxHf-ZZah9U_2IKgkcMLqtQgy_GZI-khHLdO1DcUf-U7za-WCJUTtCzeW_lWRxfAce8H_1URnetAAdeidjkIObflS1g4NQMA6vkq0cDE29EUylALhd2US_kOSl01bG9PEzkEqxC-oIeeS0NJOGSOgE8m0L-7dIRRerwLKyW6BKhh6KK4XCc_yHBsxR7OsOUFHOEKr1RMIe-Bpdjgitd4FD8DkGdlA9Li7T-a5t4Zrh7lvYrkxhccDdoHipAGGy3LpAgQd5HEP2d4QoXlIba613cmjxqPO6JuaEvy2knAtBR6ALHinuMkjND6RTmVdlVJ1Webl3x6LPXkddl90JOkbdMo9dTEXrNMUi6Uhd5ogI-PfAhnOn1ZGuh6ETe8FTfMWDMUp2jzCCXPSXXF7xyIRmMm_ufZQcWmCv-Li7oUdDoG0yKiPL9iw8-cVhAGZZ91mxT8l5XQDYAzyQ02Q90ohkqIwl2r4-W0erNmLqeVOEJFugZm8CZPZ7YqXT6vKMc8ksrwgPxKlWfN1fS22SHVNxPSJB1HVUiKaXieY8LPAvJA-PHQOYd-G0QK1hTzHLt_yg2twIjsF4_oyGcrs0mUDBQGXuOKcrsJw4PVGpWkUK1Nr6nzpRYSXEROYa8oZuM8xwO4qKFh5Yg2tKo89YWfKbsvEPyVL_sK-EX5LFr_FcUwnVkgQb9KBEQLHjC-dWym2qLx75NcLrGkoYy1B8NdNTu3TlQmSUdHgYx2enxS7-fJhwdokdbKf09STVDFbJ5mzo7e_KrHFfwFXPPRfhMOhynEWZVpiMJEtGBY60aLANL088yy4CIgSZi1xq499cl0pQD2lhUSnTxqrfBqhlsqm8PEkzuYrUuGTONI8K7kyDXnTjYU5L89FwoY45ZEFa18_r1_eO2jGcPB6aa9qqIfwIUpPVZ_dwT8oxRCUbkLe7zPSm-QBtIX5vUW5o2HzXEiLZ1hkSmWrBhGsfQOIIqIhsbIo50zmQxoLNg-GRZm-WLZgQ52fF-I3nyGxFyudjDGwbcjI7MXFSxYIIOIEz8YGbpX9YyXhfmqOQy5f764yeRFooTx8HNEQSNF7C_k6MVq2m7JFeiGBQ6OTMLz1gRwMDfXlzOqDAbWW67zwiLg93gMgWo0wygOrZwx_wObhJ16DgsbfVNemihQyhPGukw9BseNDMwyszEOPQ9uaMJDtRwvsu6NWqTPlW60yStdB3OjHizhzAAKjsQ-E-rlbsDGVzQrLA0eHBm5-PVaf8O6ZC0j1j5xwTvoOXUHFXmSRny7vqrAkIh0nYQy-NUsDeBGx6SpLUh17QR5c6OzzK_NHHusM8Jd-iAWGAeNiklGKJHFxuRJL4ISqJrQt6M_tiXmsllBrrKhkb1mjyTB9CvIyqcRoYbZecA_uvSbiw6jxxA2EiuhS-O8o6p2wtoImfzyhwfR8k6gQ9f0RKjzPM3QOpbY8KU3MtpfQpvoFen_uxKXG9Oz_yyi8VGTqYD_9Vttc8y1YjsBhAnAqG90vqK3JGhTSiLgJjVuwI8iabmXgujyXTLlY2cxYppBJ92yaJf51_Fcu_xFGBfKAz_KtBT5xUIFkVX_-pE39IstKJ_432Yk7M_IVPXJbyYoZCHmMVRGNRWwlf-JLYkmu7X0wqnqXPT0OBh7K4Em6kzQuSnuyifBMvl5jvsL1cyMJynEFoB6Bxa9YpRwoO0sDn65ZIzjjUoGtVaS1Tu4YuOx4LDjP4GQic5yig4lGG1xO9NkfIabrhmxTxGuwghFek5fc5WClO00b55kr6TT1OZJKFdvpAzKMEgifPiZh_d3xv9TbqkQisZ3sdIWA7Yy8aVsmlSS9wUSpHj4qrGOpRt01iMPnfbTTnMI7vsNoVmE1QjrdXS09XzL7VwauHgjvmoAwaqLFSkTxJMZVtEJud3YtmZquaNC8ib4k1y91axw8Prv2h3f7XKXRJraoXO--Zu4WT_oJbfLZsKgz-lQX1-OsU0eiigkBcgVpDP87rzefnvHaCyX3G8NBs0NoAXr6Kn666SaeuSfgO5gw7QvbjAcye1tA4fGT9K9d8of6c7aVjopQf17De4BuvCz74mexsQKY7NZg0ODzTTHOlTEyb9AtyKOZ2KR_Z2A-uKAtnX40MtMuVRaJ8ZKrqtAUnwEb99Z3PEOWeyq0qL_P4wvjNQ53DwXAzCxGPpZn6vn2pSSuzaACGwADHt8uAcs7yILRsOOa68eCoiesV1LhmojW3PRMDaZk90W9AUD6RoPu8Iq1ESKqoqBZt37D8-BqtnGZwdllmvTm-gzzsAwe5eVVvT0XMyv1XM6JvxGo1l7eC9slH5g6jwzmLl8ijaGFHhkHOlzjsU2PNweqbEO2l1luOuwG5hLQeH8ihNIajXRTfzmZI4WpXH8LcKSkJxEWs-Is5pTypp_Do-xzDJUWyzU3kW5M3r4A8K-_Gq4fuPaWEryRvzyF-Jr7Y16K59FtbFw`;
+
+  const argonParams = { time: 3, mem: 524288, parallelism: 1 };
+  const dec = new TextDecoder();
+
+  function b64UrlDecode(str){
+    let s = str.replace(/-/g,'+').replace(/_/g,'/');
+    const pad = (4 - (s.length % 4)) % 4;
+    s += '='.repeat(pad);
+    return Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  }
+
+  async function deriveKey(pass, salt){
+    const { hash } = await argon2.hash({
+      pass, salt,
+      time: argonParams.time, mem: argonParams.mem,
+      hashLen: 32, parallelism: argonParams.parallelism,
+      type: argon2.ArgonType.Argon2id
+    });
+    return crypto.subtle.importKey('raw', hash, { name: 'AES-GCM' }, false, ['decrypt']);
+  }
+
+  async function unlock(){
+    const pw = document.getElementById('password').value;
+    const status = document.getElementById('status');
+    if(!pw) return status.textContent = "Enter a password.";
+
+    try {
+      const bytes = b64UrlDecode(encryptedPage);
+      const salt = bytes.slice(0,16);
+      const iv   = bytes.slice(16,28);
+      const ct   = bytes.slice(28);
+      status.textContent = "Deriving key...";
+      const key = await deriveKey(pw, salt);
+      const pt = await crypto.subtle.decrypt({name:'AES-GCM', iv}, key, ct);
+      const html = dec.decode(pt);
+
+      // Replace body with decrypted HTML
+      document.open();
+      document.write(html);
+      document.close();
+    } catch(err){
+      status.textContent = "❌ Wrong password or corrupted data.";
+    }
+  }
+
+  document.getElementById('unlockBtn').addEventListener('click', unlock);
+  </script>
+</body>
+</html>
